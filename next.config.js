@@ -7,7 +7,7 @@ const nextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: `${config.backendBaseUrl}/api/:path*` || "https://basedatastorev2-production.up.railway.app/api/",
+        destination: `${process.env.BACKEND_BASE_URL}/api/:path*` || "https://basedatastorev2-production.up.railway.app/api/",
       },
       {
         source: '/login',
