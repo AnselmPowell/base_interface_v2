@@ -2,6 +2,7 @@ import { generateCSRFToken, setCSRFTokenCookie } from '@/auth/core/auth';
 import { cookies } from 'next/headers';
 
 export async function GET() {
+  
   const cookieStore = cookies();
   let csrfToken = cookieStore.get('csrfToken')?.value;
 

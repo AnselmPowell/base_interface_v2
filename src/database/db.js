@@ -1,6 +1,14 @@
-import config from '@/config';
 import { neon } from '@neondatabase/serverless';
 
-const sql = neon(process.env.POSTGRES_URL);
+let sql;
+
+if (process.env.POSTGRES_URL) {
+  sql = neon(process.env.POSTGRES_URL);
+} else {
+  sql =  () => {
+    console.log('Database query skipped in development/build');
+    return Promise.resolve([]);
+  };
+}
 
 export default sql;
