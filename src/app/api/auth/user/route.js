@@ -19,8 +19,8 @@ export async function GET() {
 
   try {
     const decoded = jwt.verify(refreshToken, JWT_SECRET);
-    const user = await authSchema.findUserById(decoded.userId);
-
+    // const user = await authSchema.findUserById(decoded.userId);
+    const user = null
     if (user) {
      
       return new Response(JSON.stringify(user), {
