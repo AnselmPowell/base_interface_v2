@@ -1,14 +1,13 @@
-const config = require('./src/config');
+// const config = require('./src/config');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   async rewrites() {
-    const backendUrl = config.backendBaseUrl || "https://basedatastorev2-production.up.railway.app";
     return [
       {
         source: '/api/:path*',
-        destination: `${backendUrl}/api/:path*`,
+        destination: `${process.env.DJANGO_BASE_URL || 'https://basedatastorev2-production.up.railway.app'}/api/:path*`,
       },
       {
         source: '/login',
@@ -21,11 +20,11 @@ const nextConfig = {
     ];
   },
   env: {
-    // POSTGRES_URL: process.env.POSTGRES_URL,
-    // POSTGRES_USER: process.env.POSTGRES_USER,
-    // POSTGRES_HOST: process.env.POSTGRES_HOST,
-    // POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD,
-    // POSTGRES_DATABASE: process.env.POSTGRES_DATABASE,
+    POSTGRES_URL: process.env.POSTGRES_URL,
+    POSTGRES_USER: process.env.POSTGRES_USER,
+    POSTGRES_HOST: process.env.POSTGRES_HOST,
+    POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD,
+    POSTGRES_DATABASE: process.env.POSTGRES_DATABASE,
     CSRF_SECRET: process.env.CSRF_SECRET,
   },
 };
