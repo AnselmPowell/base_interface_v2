@@ -4,10 +4,11 @@ const config = require('./src/config');
 const nextConfig = {
   reactStrictMode: true,
   async rewrites() {
+    const backendUrl = config.backendBaseUrl || "https://basedatastorev2-production.up.railway.app";
     return [
       {
         source: '/api/:path*',
-        destination: `${process.env.BACKEND_BASE_URL}/api/:path*` || "https://basedatastorev2-production.up.railway.app/api/",
+        destination: `${backendUrl}/api/:path*`,
       },
       {
         source: '/login',
