@@ -1,9 +1,10 @@
 import { neon } from '@neondatabase/serverless';
+import config from '@/config';
 
 let sql;
 
-if (process.env.POSTGRES_URL) {
-  sql = neon(process.env.POSTGRES_URL);
+if (config.databaseUrl) {
+  sql = neon(config.databaseUrl);
 } else {
   sql =  () => {
     console.log('Database query skipped on build');
