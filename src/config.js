@@ -25,6 +25,7 @@ const config = {
   microsoftRedirectUri: isProductionFrontend
     ? process.env.MICROSOFT_CALLBACK_URL
     : process.env.MICROSOFT_CALLBACK_URL_DEV,
+    
 };
 
 module.exports = config;
