@@ -6,7 +6,7 @@ if (process.env.POSTGRES_URL) {
   sql = neon(process.env.POSTGRES_URL);
 } else {
   sql =  () => {
-    console.log('Database query skipped in development/build');
+    console.log('Database query skipped on build');
     return Promise.resolve([]);
   };
 }
