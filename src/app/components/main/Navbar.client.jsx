@@ -22,11 +22,9 @@ export default function Navbar() {
     setIsAuthModalOpen(true);
   };
 
-  // console.log('Current data-theme:', document.documentElement.getAttribute('data-theme'));
-
   return (
     <>
-      <nav className="animate-slide-in-left">
+      <nav className="">
         <div className="w-full border-b border-tertiary bg-background">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16">

@@ -207,11 +207,11 @@ export default function LoginForm() {
         </p>
       )}
     </div>
-
+ 
     <button
         type="submit"
         disabled={isLoading}
-        className="btn w-full bg-secondary text-white"
+        className="btn w-full bg-secondary text-background"
       >
         {isLoading ? (
           <span className="animate-pulse ">Logging in...</span>
@@ -236,7 +236,7 @@ export default function LoginForm() {
           type="button"
           onClick={handleGoogleLogin}
           disabled={isLoading}
-          className="btn w-full text-white border border-tertiary hover:border-primary flex items-center justify-center gap-2"
+          className="btn w-full text-background border border-tertiary hover:border-primary flex items-center justify-center gap-2"
         >
           <FcGoogle className="h-5 w-5" />
           {isLoading ? 'Loading...' : 'Continue with Google'}
@@ -246,7 +246,7 @@ export default function LoginForm() {
           type="button"
           onClick={handleMicrosoftLogin}
           disabled={isLoading}
-          className="btn w-full text-white  border border-tertiary hover:border-primary flex items-center justify-center gap-2"
+          className="btn w-full text-background  border border-tertiary hover:border-primary flex items-center justify-center gap-2"
         >
           <TfiMicrosoftAlt className="h-5 w-5" />
           {isLoading ? 'Loading...' : 'Continue with Microsoft'}
