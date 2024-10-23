@@ -42,12 +42,6 @@ export default function Navbar() {
 
               {/* Navigation Links */}
               <div className="flex space-x-8">
-                <Link
-                  href="/"
-                  className={`p-2 text-md transition-fast ${isActivePath('/')}`}
-                >
-                  Home
-                </Link>
                 <div className="flex items-center space-x-4">
                 <button
                   onClick={() => openAuthModal('login')}
