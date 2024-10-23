@@ -1,121 +1,182 @@
+// src/app/components/UserList.client.jsx
 'use client';
 
-import { useState, useEffect } from 'react';
-
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function UserList() {
   const [users, setUsers] = useState([]);
   const [newUser, setNewUser] = useState({ first_name: '', last_name: '', email: '' });
   const [isLoading, setIsLoading] = useState(false);
   const [createIsLoading, setCreateIsLoading] = useState(false);
+  const [formError, setFormError] = useState({});
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
-
-  const fetchUsers = async () => {
-    setIsLoading(true);
-  
-    try {
-      const response = await fetch('/api/backend/users');
-   
-       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to fetch users');
-      }
-      const data = await response.json();
-      setUsers(data);
-    } catch (err) {
-      console.error("Error fetching users:", err);
-      setUsers([]);
-      // Optionally set an error state here to display to the user
-    } finally {
-      setIsLoading(false);
-    }
+  const validateForm = () => {
+    const errors = {};
+    if (!newUser.first_name.trim()) errors.first_name = 'First name is required';
+    if (!newUser.last_name.trim()) errors.last_name = 'Last name is required';
+    if (!newUser.email.trim()) errors.email = 'Email is required';
+    else if (!/\S+@\S+\.\S+/.test(newUser.email)) errors.email = 'Email is invalid';
+    return errors;
   };
 
-  const createUser = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const errors = validateForm();
+    if (Object.keys(errors).length > 0) {
+      setFormError(errors);
+      return;
+    }
     setCreateIsLoading(true);
     try {
       const response = await fetch('/api/users', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newUser),
       });
-      if (!response.ok) {
-        throw new Error('Failed to create user');
-      }
+      if (!response.ok) throw new Error('Failed to create user');
+      const data = await response.json();
+      setUsers(prev => [data, ...prev]);
       setNewUser({ first_name: '', last_name: '', email: '' });
-      fetchUsers(); // Refetch users after creating a new one
+      setFormError({});
     } catch (err) {
       console.error(err);
     } finally {
       setCreateIsLoading(false);
     }
   };
-
-  const handleInputChange = (e) => {
-    setNewUser({ ...newUser, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    createUser();
-  };
-
   return (
-    <div>
-      <h2>User List</h2>
-      {isLoading ? (
-        <p>Loading users...</p>
-      ) : users.length > 0 ? (
-        <ul>
-          {users.map((user) => (
-            <li key={user.id}>
-              {user.first_name} {user.last_name} - {user.email}
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <>
-        <br/>
-        <p>User List Pending...</p>
-        </>
-      )}
-      <br/>
-
-      <h3>Add New User</h3>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="first_name"
-          value={newUser.first_name}
-          onChange={handleInputChange}
-          placeholder="First Name"
-          required
-        />
-        <input
-          type="text"
-          name="last_name"
-          value={newUser.last_name}
-          onChange={handleInputChange}
-          placeholder="Last Name"
-          required
-        />
-        <input
-          type="email"
-          name="email"
-          value={newUser.email}
-          onChange={handleInputChange}
-          placeholder="Email"
-          required
-        />
-        <button type="submit" disabled={createIsLoading}>
-          {createIsLoading ? 'Creating...' : 'Add User'}
-        </button>
-      </form>
+    // Updated container width and centering
+    <div className="w-full max-w-2xl mx-auto p-6 animate-fade-in">
+      {/* Form Card - added tighter padding */}
+      <div className="card bg-background mb-6 shadow-lg p-4">
+        <h2 className="text-xl text-primary font-bold mb-4">Create New User</h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {/* First Name Input */}
+            <div className="relative">
+              <input
+                type="text"
+                name="first_name"
+                value={newUser.first_name}
+                onChange={(e) => {
+                  setNewUser({ ...newUser, first_name: e.target.value });
+                  setFormError({ ...formError, first_name: '' });
+                }}
+                className={`input focus-highlight ${
+                  formError.first_name ? 'border-error' : ''
+                }`}
+                placeholder="First Name"
+              />
+              {formError.first_name && (
+                <p className="text-error text-sm mt-1 animate-wiggle-once">
+                  {formError.first_name}
+                </p>
+              )}
+            </div>
+  
+            {/* Last Name Input */}
+            <div className="relative">
+              <input
+                type="text"
+                name="last_name"
+                value={newUser.last_name}
+                onChange={(e) => {
+                  setNewUser({ ...newUser, last_name: e.target.value });
+                  setFormError({ ...formError, last_name: '' });
+                }}
+                className={`input focus-highlight ${
+                  formError.last_name ? 'border-error' : ''
+                }`}
+                placeholder="Last Name"
+              />
+              {formError.last_name && (
+                <p className="text-error text-sm mt-1 animate-wiggle-once">
+                  {formError.last_name}
+                </p>
+              )}
+            </div>
+          </div>
+  
+          {/* Email Input */}
+          <div className="relative">
+            <input
+              type="email"
+              name="email"
+              value={newUser.email}
+              onChange={(e) => {
+                setNewUser({ ...newUser, email: e.target.value });
+                setFormError({ ...formError, email: '' });
+              }}
+              className={`input focus-highlight ${
+                formError.email ? 'border-error' : ''
+              }`}
+              placeholder="Email Address"
+            />
+            {formError.email && (
+              <p className="text-error text-sm mt-1 animate-wiggle-once">
+                {formError.email}
+              </p>
+            )}
+          </div>
+  
+          {/* Submit Button - reduced vertical padding */}
+          <button
+            type="submit"
+            disabled={createIsLoading}
+            className={`btn w-full py-2 ${
+              createIsLoading ? 'opacity-75 cursor-not-allowed' : ''
+            }`}
+          >
+            {createIsLoading ? (
+              <span className="animate-pulse">Creating User...</span>
+            ) : (
+              'Create User'
+            )}
+          </button>
+        </form>
+      </div>
+  
+      {/* Users List - tighter padding and compact design */}
+      <div className="card bg-background shadow-lg p-4">
+        <h2 className="text-xl text-primary font-bold mb-4">User List</h2>
+        <div className="space-y-3">
+          <AnimatePresence>
+            {users.length > 0 ? (
+              users.map((user, index) => (
+                <motion.div
+                  key={user.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, x: -100 }}
+                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                  className="p-3 bg-background rounded-lg border border-tertiary hover:border-primary transition-fast"
+                >
+                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-1 md:space-y-0">
+                    <div>
+                      <h3 className="text-md font-semibold text-primary">
+                        {user.first_name} {user.last_name}
+                      </h3>
+                      <p className="text-secondary text-sm">{user.email}</p>
+                    </div>
+                    <span className="text-xs text-tertiary">
+                      {new Date(user.created_at).toLocaleDateString()}
+                    </span>
+                  </div>
+                </motion.div>
+              ))
+            ) : (
+              <div className="text-center py-6 text-tertiary">
+                {isLoading ? (
+                  <div className="animate-pulse">Loading users...</div>
+                ) : (
+                  <p>No users found. Create one above!</p>
+                )}
+              </div>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
     </div>
   );
 }

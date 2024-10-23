@@ -1,51 +1,77 @@
+// src/app/components/main/Navbar.client.jsx
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
-import { useAuth } from '@/app/contexts/AuthContext.client'
+import { usePathname } from 'next/navigation';
+import ThemeToggle from './ThemeToggle.client';
+import AuthModal from '../auth/AuthModal.client';
 
 export default function Navbar() {
-  const { user, loading, logout } = useAuth();
+  const pathname = usePathname();
 
-  console.log("In the Navigation Test User Information:", user)
+  const isActivePath = (path) => {
+    return pathname === path ? 'text-primary border-primary' : 'text-secondary hover:text-primary';
+  };
 
-  if (loading) {
-    return <nav className="p-4 bg-white-800 text-white">Loading...</nav>;
-  }
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [initialAuthView, setInitialAuthView] = useState('login');
+  
+  const openAuthModal = (view) => {
+    setInitialAuthView(view);
+    setIsAuthModalOpen(true);
+  };
 
+  // console.log('Current data-theme:', document.documentElement.getAttribute('data-theme'));
 
   return (
-    <nav className="p-4 bg-white-800 text-white flex justify-between items-center">
-      <div>
-        <Link href="/" className="text-lg text-black font-semibold hover:text-blue-300">Logo</Link>
-      </div>
-      <div className="space-x-4">
-        {user ? (
-          <>
-            <span className="font-medium">Welcome, {user.username}!</span>
-            <button 
-              onClick={logout} 
-              className="bg-white-500 hover:bg-gray-600 text-black px-3 py-1 rounded-md"
-            >
-              Logout
-            </button>
-          </>
-        ) : (
-          <>
-            <Link 
-              href="/login" 
-              className="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded-md"
-            >
-              Login
-            </Link>
-            <Link 
-              href="/register" 
-              className="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded-md"
-            >
-              Register
-            </Link>
-          </>
-        )}
-      </div>
-    </nav>
+    <>
+      <nav className="animate-slide-in-left">
+        <div className="w-full border-b border-tertiary bg-background">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center h-16">
+              {/* Logo/Home */}
+              <div className="flex-shrink-0">
+                <Link 
+                  href="/" 
+                  className={`text-xl font-bold ${isActivePath('/')} transition-fast`}
+                >
+                  Base Project
+                </Link>
+              </div>
+
+              {/* Navigation Links */}
+              <div className="flex space-x-8">
+                <Link
+                  href="/"
+                  className={`p-2 text-md transition-fast ${isActivePath('/')}`}
+                >
+                  Home
+                </Link>
+                <div className="flex items-center space-x-4">
+                <button
+                  onClick={() => openAuthModal('login')}
+                  className="text-secondary hover:text-primary transition-fast"
+                >
+                  Login
+                </button>
+                <button
+                  onClick={() => openAuthModal('register')}
+                  className="btn">
+                  Sign Up
+                </button>
+                <ThemeToggle />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <AuthModal
+      isOpen={isAuthModalOpen}
+      onClose={() => setIsAuthModalOpen(false)}
+      initialView={initialAuthView}
+    />
+   </>
   );
 }

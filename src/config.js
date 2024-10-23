@@ -1,6 +1,6 @@
 const isProductionFrontend = process.env.IS_PRODUCTION_FRONTEND === 'true';
 const isProductionBackend = process.env.IS_PRODUCTION_BACKEND === 'true';
-
+ 
 const config = {
   isProductionFrontend,
   isProductionBackend,
