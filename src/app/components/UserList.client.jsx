@@ -2,7 +2,6 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 
 export default function UserList() {
   const [users, setUsers] = useState([]);
@@ -45,10 +44,10 @@ export default function UserList() {
       setCreateIsLoading(false);
     }
   };
+  
   return (
-    // Updated container width and centering
     <div className="w-full max-w-2xl mx-auto p-6 animate-fade-in">
-      {/* Form Card - added tighter padding */}
+      {/* Form Card */}
       <div className="card bg-background mb-6 shadow-lg p-4">
         <h2 className="text-xl text-primary font-bold mb-4">Create New User</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -120,7 +119,7 @@ export default function UserList() {
             )}
           </div>
   
-          {/* Submit Button - reduced vertical padding */}
+          {/* Submit Button */}
           <button
             type="submit"
             disabled={createIsLoading}
@@ -137,44 +136,38 @@ export default function UserList() {
         </form>
       </div>
   
-      {/* Users List - tighter padding and compact design */}
+      {/* Users List */}
       <div className="card bg-background shadow-lg p-4">
         <h2 className="text-xl text-primary font-bold mb-4">User List</h2>
         <div className="space-y-3">
-          <AnimatePresence>
-            {users.length > 0 ? (
-              users.map((user, index) => (
-                <motion.div
-                  key={user.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, x: -100 }}
-                  transition={{ duration: 0.3, delay: index * 0.1 }}
-                  className="p-3 bg-background rounded-lg border border-tertiary hover:border-primary transition-fast"
-                >
-                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-1 md:space-y-0">
-                    <div>
-                      <h3 className="text-md font-semibold text-primary">
-                        {user.first_name} {user.last_name}
-                      </h3>
-                      <p className="text-secondary text-sm">{user.email}</p>
-                    </div>
-                    <span className="text-xs text-tertiary">
-                      {new Date(user.created_at).toLocaleDateString()}
-                    </span>
+          {users.length > 0 ? (
+            users.map((user) => (
+              <div
+                key={user.id}
+                className="p-3 bg-background rounded-lg border border-tertiary hover:border-primary transition-fast animate-slide-in-left"
+              >
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-1 md:space-y-0">
+                  <div>
+                    <h3 className="text-md font-semibold text-primary">
+                      {user.first_name} {user.last_name}
+                    </h3>
+                    <p className="text-secondary text-sm">{user.email}</p>
                   </div>
-                </motion.div>
-              ))
-            ) : (
-              <div className="text-center py-6 text-tertiary">
-                {isLoading ? (
-                  <div className="animate-pulse">Loading users...</div>
-                ) : (
-                  <p>No users found. Create one above!</p>
-                )}
+                  <span className="text-xs text-tertiary">
+                    {new Date(user.created_at).toLocaleDateString()}
+                  </span>
+                </div>
               </div>
-            )}
-          </AnimatePresence>
+            ))
+          ) : (
+            <div className="text-center py-6 text-tertiary">
+              {isLoading ? (
+                <div className="animate-pulse">Loading users...</div>
+              ) : (
+                <p>No users found. Create one above!</p>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>
