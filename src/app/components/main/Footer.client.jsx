@@ -30,13 +30,13 @@ export default function Footer() {
             <div className="flex items-center space-x-6">
               <Link 
                 href="/playground" 
-                className="text-secondary hover:text-primary transition-fast animate-pulse"
+                className="text-secondary hover:text-primary"
               >
                 Playground A
               </Link>
               <Link 
                 href="/playground/playground-b" 
-                className="text-secondary hover:text-primary transition-fast animate-pulse"
+                className="text-secondary hover:text-primary "
               >
                 Playground B
               </Link>
