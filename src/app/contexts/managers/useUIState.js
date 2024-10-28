@@ -13,7 +13,6 @@ export function useUIState() {
         return savedTheme = 'light';
 
       }
-      // return savedTheme ? JSON.parse(savedTheme) : 'light';
     }
     return 'light';
   });
