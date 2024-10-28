@@ -5,7 +5,7 @@ export function useUIState() {
   // Get initial theme from window.__theme set by ThemeScript
   const [theme, setTheme] = usePersistedState('theme', () => {
     if (typeof window !== 'undefined') {
-      const savedTheme = localStorage.getItem('theme');
+      let savedTheme = localStorage.getItem('theme');
       if (storedTheme) {
         // Remove any quotes that might be present
         return savedTheme.replace(/['"]+/g, '');
