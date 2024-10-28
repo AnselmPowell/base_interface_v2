@@ -6,7 +6,14 @@ export function useUIState() {
   const [theme, setTheme] = usePersistedState('theme', () => {
     if (typeof window !== 'undefined') {
       const savedTheme = localStorage.getItem('theme');
-      return savedTheme ? JSON.parse(savedTheme) : 'light';
+      if (storedTheme) {
+        // Remove any quotes that might be present
+        return savedTheme.replace(/['"]+/g, '');
+      } else {
+        return savedTheme = 'light';
+
+      }
+      // return savedTheme ? JSON.parse(savedTheme) : 'light';
     }
     return 'light';
   });

@@ -11,7 +11,11 @@ export function usePersistedState(key, initialValue) {
     try {
       // Check localStorage for existing value
       const item = localStorage.getItem(key);
-      if (item) return JSON.parse(item);
+      if (item) {
+        // Remove any quotes that might be present
+        return item.replace(/['"]+/g, '');
+      }
+      // if (item) return JSON.parse(item);
       
       // Handle functional initial state
       return typeof initialValue === 'function' ? initialValue() : initialValue;
