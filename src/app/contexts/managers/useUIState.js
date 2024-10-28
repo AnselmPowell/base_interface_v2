@@ -6,7 +6,7 @@ export function useUIState() {
   const [theme, setTheme] = usePersistedState('theme', () => {
     if (typeof window !== 'undefined') {
       let savedTheme = localStorage.getItem('theme');
-      if (storedTheme) {
+      if (savedTheme) {
         // Remove any quotes that might be present
         return savedTheme.replace(/['"]+/g, '');
       } else {
