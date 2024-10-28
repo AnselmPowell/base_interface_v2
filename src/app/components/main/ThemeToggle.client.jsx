@@ -1,19 +1,34 @@
+// src/app/components/main/ThemeToggle.client.jsx
 'use client';
 
 import { Moon, Sun } from 'lucide-react';
-import { useTheme } from '@/app/contexts/ThemeContext.client';
+import { useApp } from '@/app/contexts/AppContext.client';
+import { useState, useEffect } from 'react';
 
 export default function ThemeToggle() {
-  const { theme, toggleTheme } = useTheme();
+  const { ui } = useApp();
+  const [mounted, setMounted] = useState(false); 
+
+  // Only show the toggle after mounting on the client
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null; // Return null on server-side and first render
+  }
+
+  
+  console.log("theme: ", ui.theme)
 
   return (
     <button
-      onClick={toggleTheme}
+      onClick={ui.toggleTheme}
       className="p-2 rounded-md hover:bg-tertiary/20 transition-colors duration-200
                 flex items-center justify-center gap-2"
       aria-label="Toggle theme"
     >
-      {theme === 'light' ? (
+      {ui.theme === 'light' ? (
         <>
           <Moon className="h-5 w-5 text-secondary" />
           <span className="text-sm text-secondary">Dark Mode</span>
@@ -27,3 +42,5 @@ export default function ThemeToggle() {
     </button>
   );
 }
+
+

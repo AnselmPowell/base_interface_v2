@@ -1,6 +1,7 @@
 // src/app/playground/components/ResponsiveCard/ResponsiveCard.client.jsx
 'use client';
 
+import Image from 'next/image';
 import { useResponsiveCard } from './ResponsiveCardLogic';
 import { ChevronDown, ChevronUp, Check } from 'lucide-react';
 
@@ -28,7 +29,7 @@ export default function ResponsiveCard({
     <div className="w-full max-w-2xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl">
       {/* Card Header */}
       <div className="relative  ">
-        <img 
+      <Image 
           src={image} 
           alt={title}
           className="w-full h-48 object-cover"

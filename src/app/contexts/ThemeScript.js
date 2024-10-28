@@ -1,24 +1,38 @@
-// No 'use client' directive here - this is a server component
+
+// src/app/context/ThemeScript.js
 export default function ThemeScript() {
-    return (
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
-            (function() {
-              function getInitialTheme() {
-                const savedTheme = localStorage.getItem('theme');
-                if (savedTheme) {
-                  return savedTheme;
+  return (
+    <script
+      dangerouslySetInnerHTML={{
+        __html: `
+          (function() {
+            function getInitialTheme() {
+              try {
+                const storedTheme = JSON.parse(localStorage.getItem('theme'));
+                if (storedTheme) {
+                  return storedTheme;
                 }
-                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                  return 'dark';
+                }
+              } catch {
+                return 'light';
               }
-              
-              const theme = getInitialTheme();
-              document.documentElement.setAttribute('data-theme', theme);
-              document.documentElement.classList.add(theme);
-            })();
-          `,
-        }}
-      />
-    );
-  }
+              return 'light';
+            }
+            
+            const theme = getInitialTheme();
+            
+            // Set theme immediately to prevent flash
+            document.documentElement.dataset.theme = theme;
+            document.documentElement.classList.remove('light', 'dark');
+            document.documentElement.classList.add(theme);
+
+            // Make theme available globally before React hydrates
+            window.__theme = theme;
+          })();
+        `,
+      }}
+    />
+  );
+}
