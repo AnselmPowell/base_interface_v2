@@ -1,5 +1,4 @@
-
-// src/app/context/ThemeScript.js
+// src/app/contexts/ThemeScript.js
 export default function ThemeScript() {
   return (
     <script
@@ -8,9 +7,11 @@ export default function ThemeScript() {
           (function() {
             function getInitialTheme() {
               try {
-                const storedTheme = JSON.parse(localStorage.getItem('theme'));
+                const storedTheme = localStorage.getItem('theme');
+                // Remove the JSON.parse and handle the string directly
                 if (storedTheme) {
-                  return storedTheme;
+                  // Remove any quotes that might be present
+                  return storedTheme.replace(/['"]+/g, '');
                 }
                 if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
                   return 'dark';
