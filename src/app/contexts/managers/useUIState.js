@@ -10,7 +10,8 @@ export function useUIState() {
         // Remove any quotes that might be present
         return savedTheme.replace(/['"]+/g, '');
       } else {
-        return savedTheme = 'light';
+        savedTheme = 'light';
+        return savedTheme 
 
       }
     }
