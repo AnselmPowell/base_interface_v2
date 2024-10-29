@@ -8,6 +8,7 @@ const POSTGRESS_URL = config.databaseUrl;
 
 export default function UserList() {
   const [users, setUsers] = useState([]);
+  const [checkURL, setCheckURL] = useState([]);
   const [newUser, setNewUser] = useState({ first_name: '', last_name: '', email: '' });
   const [isLoading, setIsLoading] = useState(false);
   const [createIsLoading, setCreateIsLoading] = useState(false);
@@ -27,6 +28,10 @@ export default function UserList() {
     console.log("Hello!");
     console.log({POSTGRESS_URL});
     console.log(process.env.POSTGRES_URL);
+    const check = await fetch('/api/backend/check');
+    const url = check.json()
+    console.log("URL", url)
+    setCheckURL(url.endpoint)
     try {
       const response = await fetch('/api/backend/users');
       if (!response.ok) {
@@ -81,7 +86,7 @@ export default function UserList() {
     <div className="w-full max-w-2xl mx-auto p-6 animate-fade-in">
       {/* Form Card */}
       <div className="card bg-background mb-6 shadow-lg p-4">
-        <h2 className="text-xl text-primary font-bold mb-4">Create New User</h2>
+        <h2 className="text-xl text-primary font-bold mb-4">Create New User, {checkURL} </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {/* First Name Input */}
