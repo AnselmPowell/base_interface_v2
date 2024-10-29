@@ -2,6 +2,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import config from '../../config';
+
+const POSTGRESS_URL = config.databaseUrl;
 
 export default function UserList() {
   const [users, setUsers] = useState([]);
@@ -22,6 +25,8 @@ export default function UserList() {
   const fetchUsers = async () => {
     setIsLoading(true);
     console.log("Hello!");
+    console.log({POSTGRESS_URL});
+    console.log(process.env.POSTGRES_URL);
     try {
       const response = await fetch('/api/backend/users');
       if (!response.ok) {

@@ -7,7 +7,7 @@ const nextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: `${process.env.BACKEND_BASE_URL || 'https://basedatastorev2-production.up.railway.app'}/api/:path*`,
+        destination: `${process.env.BACKEND_BASE_URL}`,
       },
       {
         source: '/login',
@@ -23,4 +23,5 @@ const nextConfig = {
     CSRF_SECRET: process.env.CSRF_SECRET,
   },
 };
+
 

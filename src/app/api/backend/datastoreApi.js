@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 import config from '@/config';
 
 const DJANGO_API_URL = config.backendApiUrl;
+const POSTGRESS_URL = config.databaseUrl;
 
 
 export default async function datastoreApi(endpoint, options = {}) {
@@ -16,6 +17,7 @@ export default async function datastoreApi(endpoint, options = {}) {
   };
 
   try {
+    console.log("postgres API:", POSTGRESS_URL)
     console.log("DJANGO API:", DJANGO_API_URL)
     console.log("DJANGO API:", `${DJANGO_API_URL}${endpoint}`)
     const response = await fetch(`${DJANGO_API_URL}${endpoint}`, {
