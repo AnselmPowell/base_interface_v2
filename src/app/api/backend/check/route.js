@@ -5,7 +5,7 @@ export const DJANGO_BASE_URL=config.backendBaseUrl
 
 export async function GET() {
       // const url = json.stringify(process.env.BACKEND_BASE_URL)
-      const url = ["BEFORE", process.env.BACKEND_BASE_URL, DJANGO_BASE_URL, "NEXT"]
+      const url = ["BEFORE", process.env.IS_PRODUCTION_FRONTEND, DJANGO_BASE_URL, "NEXT"]
       
       console.log("URL---------------",url )
       const data = {endpoint: url }
