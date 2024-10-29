@@ -29,7 +29,7 @@ export default function UserList() {
     console.log(process.env.POSTGRES_URL);
     const check = await fetch('/api/backend/check');
     // console.log("URL Check: ", check)
-    const url = check.json()
+    const url = await check.json()
     console.log("URL", url)
     setCheckURL(url.endpoint)
     try {
