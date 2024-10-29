@@ -10,6 +10,24 @@ export default function UserList() {
   const [createIsLoading, setCreateIsLoading] = useState(false);
   const [formError, setFormError] = useState({});
 
+  const fetchUsers = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/backend/users');
+      if (!response.ok) {
+        throw new Error('Failed to fetch users');
+      }
+      console.log({response});
+      const data = await response.json();
+      setUsers(data);
+    } catch (err) {
+      console.error("Error fetching users:", err);
+      setUsers([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const validateForm = () => {
     const errors = {};
     if (!newUser.first_name.trim()) errors.first_name = 'First name is required';
@@ -28,7 +46,7 @@ export default function UserList() {
     }
     setCreateIsLoading(true);
     try {
-      const response = await fetch('/api/users', {
+      const response = await fetch('/api/backend/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newUser),
@@ -44,6 +62,10 @@ export default function UserList() {
       setCreateIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
   
   return (
     <div className="w-full max-w-2xl mx-auto p-6 animate-fade-in">
