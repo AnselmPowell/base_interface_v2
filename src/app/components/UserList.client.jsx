@@ -21,11 +21,13 @@ export default function UserList() {
 
   const fetchUsers = async () => {
     setIsLoading(true);
+    console.log("Hello!");
     try {
       const response = await fetch('/api/backend/users');
       if (!response.ok) {
         throw new Error('Failed to fetch users');
       }
+      console.log("Hello!");
       console.log({response});
       const data = await response.json();
       setUsers(data);

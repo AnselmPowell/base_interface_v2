@@ -4,6 +4,7 @@ import datastoreApi from '../datastoreApi';
 export async function GET() {
     try {
       const data = await datastoreApi('users/');
+      console.log({data});
       return NextResponse.json(data);
     } catch (error) {
       console.error("Error fetching users:", error);
