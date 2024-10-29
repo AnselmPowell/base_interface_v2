@@ -1,7 +1,7 @@
 // src/app/components/UserList.client.jsx
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function UserList() {
   const [users, setUsers] = useState([]);
@@ -9,6 +9,15 @@ export default function UserList() {
   const [isLoading, setIsLoading] = useState(false);
   const [createIsLoading, setCreateIsLoading] = useState(false);
   const [formError, setFormError] = useState({});
+
+  const validateForm = () => {
+    const errors = {};
+    if (!newUser.first_name.trim()) errors.first_name = 'First name is required';
+    if (!newUser.last_name.trim()) errors.last_name = 'Last name is required';
+    if (!newUser.email.trim()) errors.email = 'Email is required';
+    else if (!/\S+@\S+\.\S+/.test(newUser.email)) errors.email = 'Email is invalid';
+    return errors;
+  };
 
   const fetchUsers = async () => {
     setIsLoading(true);
@@ -28,15 +37,6 @@ export default function UserList() {
     }
   };
 
-  const validateForm = () => {
-    const errors = {};
-    if (!newUser.first_name.trim()) errors.first_name = 'First name is required';
-    if (!newUser.last_name.trim()) errors.last_name = 'Last name is required';
-    if (!newUser.email.trim()) errors.email = 'Email is required';
-    else if (!/\S+@\S+\.\S+/.test(newUser.email)) errors.email = 'Email is invalid';
-    return errors;
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const errors = validateForm();
@@ -53,7 +53,7 @@ export default function UserList() {
       });
       if (!response.ok) throw new Error('Failed to create user');
       const data = await response.json();
-      setUsers(prev => [data, ...prev]);
+      setUsers(prevUsers => [createdUser, ...prevUsers]);
       setNewUser({ first_name: '', last_name: '', email: '' });
       setFormError({});
     } catch (err) {
@@ -62,11 +62,14 @@ export default function UserList() {
       setCreateIsLoading(false);
     }
   };
+  
 
   useEffect(() => {
     fetchUsers();
   }, []);
-  
+
+
+
   return (
     <div className="w-full max-w-2xl mx-auto p-6 animate-fade-in">
       {/* Form Card */}
