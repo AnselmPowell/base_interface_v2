@@ -4,6 +4,8 @@ import Head from 'next/head'
 import styles from './styles/Main.module.css';
 import UserList from './components/UserList.client';
 import { useAuth } from '@/app/contexts/AuthContext.client';
+import UploadImage from './components/fileUpload/UploadImage.client';
+import  UploadFile  from './components/fileUpload/UploadFile.client';
 
 export default function HomePage() {
   const { user, checkAuth } = useAuth();
@@ -24,6 +26,8 @@ export default function HomePage() {
         <br/>
       </p>}
       <UserList />
+      <UploadImage/>
+      <UploadFile/>
     </div>
   );
 }
